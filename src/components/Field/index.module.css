@@ -1,0 +1,53 @@
+.root,
+.root :global(.field-label) {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.root {
+  gap: 12px;
+  align-items: center;
+}
+
+.root svg {
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+.root :global(.field-label) {
+  line-height: 1;
+  gap: 8px;
+  align-items: center;
+  padding: 0 !important;
+}
+
+.status {
+  color: var(--theme-success-500);
+  border: 1px solid currentColor;
+  border-radius: 2em;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 19px;
+  padding: 0 7px;
+  white-space: nowrap;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.description {
+  color: var(--theme-elevation-700);
+  line-height: 1.5;
+}
+
+.action {
+  flex-shrink: 0;
+}
+
+.action button {
+  margin: 0;
+}

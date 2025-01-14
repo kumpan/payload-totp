@@ -1,0 +1,130 @@
+$gap: 12px;
+$width: 32px;
+$height: 40px;
+$transition-duration: 200ms;
+$transition-timing-function: ease;
+$expand-glow-duration: $transition-duration * 2.25;
+$expand-glow-timing-function: ease;
+
+:export {
+    expandGlowDuration: $expand-glow-duration;
+}
+
+.glow, .root {
+    display: inline-flex;
+    gap: $gap;
+}
+
+.glow {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+    > * {
+        opacity: 0;
+    }
+}
+
+.root {
+    position: relative;
+
+    input {
+        position: relative;
+        text-align: center;
+        border: 0;
+        caret-color: transparent;
+        outline: 0;
+        background: #fff;
+        box-shadow: 0 10px 19px 4px rgb(0 0 0 / 0.05), 
+            0 -10px 16px -4px rgb(255 255 255 / 0.04), 
+            0 0 0 1px rgb(0 0 0 / 0.01), 
+            0 1px 0 0 rgb(0 0 0 / 0.02);
+        font-size: 18px;
+        line-height: 1;
+        font-weight: 500;
+        transition: background-color $transition-duration $transition-timing-function;
+
+        &:disabled {
+            color: #fff;
+        }
+
+        &::selection {
+            background: transparent;
+            color: currentColor;
+        }
+
+        &:focus {
+            background-color: var(--theme-success-50);
+        }
+
+        @for $i from 1 through 6 {
+            &:nth-child(#{$i}):focus ~ .focus {
+                opacity: 1;
+                transform: translateX(#{$width * ($i - 1) + $gap * ($i - 1)});
+            }
+        }
+    }
+}
+
+.root input, .focus, .root input::after, .glow > * {
+    width: $width;
+    height: $height;
+    border-radius: 6px;
+}
+
+.focus {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    transition: transform $transition-duration $transition-timing-function,
+        opacity $transition-duration $transition-timing-function;
+}
+
+.focus, .glow > * {
+    box-shadow: var(--theme-success-600) 0px 0px 0px 1px inset, var(--theme-success-500) 0px 0px 4px 2px;
+}
+
+.disabled {
+    .focus {
+        opacity: 0;
+        transform: translateX(#{$width * 5 + $gap * 5});
+    }
+}
+
+.expandGlow {
+    > * {
+        animation-name: expandGlow;
+        animation-duration: $expand-glow-duration;
+        animation-timing-function: $expand-glow-timing-function;
+    }
+}
+
+@keyframes expandGlow {
+    0% {
+        opacity: 0;
+        transform: scale(1);
+    }
+    25% {
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.35);
+    }
+}
+
+html[data-theme=dark] {
+    .root {
+        input {
+            background: color-mix(in srgb, var(--theme-elevation-0), #000 30%);
+            box-shadow: 0 10px 19px 4px rgb(0 0 0 / 0.16), 
+                0 -10px 16px -4px rgb(255 255 255 / 0.04), 
+                0 0 0 1px rgb(255 255 255 / 0.01), 
+                0 1px 0 0 rgb(0 0 0 / 0.02);
+        }
+    }
+
+    .focus, .glow > * {
+        box-shadow: var(--theme-success-500) 0px 0px 0px 1px inset, var(--theme-success-200) 0px 0px 4px 2px;
+    }
+}
