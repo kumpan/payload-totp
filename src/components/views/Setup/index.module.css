@@ -1,36 +1,36 @@
 .root {
-  background: var(--theme-elevation-50);
+	background: var(--theme-elevation-50);
 }
 
 .root :global(.template-minimal__wrap) {
-  max-width: 600px !important;
-  text-align: center;
-  gap: 32px;
+	max-width: 600px !important;
+	text-align: center;
+	gap: 32px;
 }
 
 .root h1,
 .root p {
-  text-align: center;
-  margin: 0;
+	text-align: center;
+	margin: 0;
 }
 
 .root p {
-  line-height: 1.5;
-  font-size: 16px;
+	line-height: 1.5;
+	font-size: 16px;
 }
 
 html[data-theme='dark'] .root {
-  background: var(--theme-elevation-0);
+	background: var(--theme-elevation-0);
 }
 
 .root :global(.template-minimal__wrap),
 .qr {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .qr img,
 .code p {
-  margin-bottom: 16px;
+	margin-bottom: 16px;
 }

@@ -1,70 +1,77 @@
 import type { I18nClient } from '@payloadcms/translations'
-import { Secret, TOTP } from 'otpauth'
 import type { PayloadHandler } from 'payload'
-
 import type { CustomTranslationsKeys, CustomTranslationsObject } from 'src/i18n.js'
 import type { PayloadTOTPConfig } from 'src/types.js'
+
+import { Secret, TOTP } from 'otpauth'
+
 import { getTotpSecret } from '../utilities/getTotpSecret.js'
 import { removeCookie } from '../utilities/removeCookie.js'
 
 export function removeEndpointHandler(pluginOptions: PayloadTOTPConfig) {
-  const handler: PayloadHandler = async (req) => {
-    const { user, payload } = req
-    const i18n = req.i18n as unknown as I18nClient<CustomTranslationsObject, CustomTranslationsKeys>
+	const handler: PayloadHandler = async (req) => {
+		const { payload, user } = req
+		const i18n = req.i18n as unknown as I18nClient<
+			CustomTranslationsObject,
+			CustomTranslationsKeys
+		>
 
-    if (!user) {
-      return Response.json({ ok: false, message: i18n.t('error:unauthorized') })
-    }
+		if (!user) {
+			return Response.json({ message: i18n.t('error:unauthorized'), ok: false })
+		}
 
-    const totpSecret = await getTotpSecret(user, payload)
+		const totpSecret = await getTotpSecret(user, payload)
 
-    if (!totpSecret || pluginOptions.forceSetup) {
-      return Response.json({ ok: false, message: i18n.t('error:unauthorized') })
-    }
+		if (!totpSecret || pluginOptions.forceSetup) {
+			return Response.json({ message: i18n.t('error:unauthorized'), ok: false })
+		}
 
-    let data: any
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		let data: any
 
-    try {
-      data = req.json && (await req.json())
-    } catch (err) {}
+		try {
+			data = req.json && (await req.json())
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-empty
+		} catch (err) {}
 
-    if (typeof data !== 'object' || typeof data['token'] !== 'string') {
-      return Response.json({ ok: false, message: i18n.t('error:unspecific') })
-    }
+		// TODO: A better validation
+		if (typeof data !== 'object' || typeof data['token'] !== 'string') {
+			return Response.json({ message: i18n.t('error:unspecific'), ok: false })
+		}
 
-    const totp = new TOTP({
-      issuer: pluginOptions.totp?.issuer || 'Payload',
-      algorithm: pluginOptions.totp?.algorithm || 'SHA1',
-      digits: pluginOptions.totp?.digits || 6,
-      period: pluginOptions.totp?.period || 30,
-      label: user.email || user.username,
-      secret: Secret.fromBase32(totpSecret),
-    })
+		const totp = new TOTP({
+			algorithm: pluginOptions.totp?.algorithm || 'SHA1',
+			digits: pluginOptions.totp?.digits || 6,
+			issuer: pluginOptions.totp?.issuer || 'Payload',
+			label: user.email || user.username,
+			period: pluginOptions.totp?.period || 30,
+			secret: Secret.fromBase32(totpSecret),
+		})
 
-    const delta = totp.validate({ token: data['token'].toString(), window: 1 })
+		const delta = totp.validate({ token: data['token'].toString(), window: 1 })
 
-    if (delta === null) {
-      return Response.json({ ok: false, message: i18n.t('totpPlugin:setup:incorrectCode') })
-    }
+		if (delta === null) {
+			return Response.json({ message: i18n.t('totpPlugin:setup:incorrectCode'), ok: false })
+		}
 
-    await payload.update({
-      collection: user.collection,
-      id: user.id,
-      overrideAccess: true,
-      data: {
-        totpSecret: null,
-      },
-    })
+		await payload.update({
+			id: user.id,
+			collection: user.collection,
+			data: {
+				totpSecret: null,
+			},
+			overrideAccess: true,
+		})
 
-    await removeCookie(payload.config.cookiePrefix)
+		await removeCookie(payload.config.cookiePrefix)
 
-    return Response.json({ ok: true })
-  }
+		return Response.json({ ok: true })
+	}
 
-  return handler
+	return handler
 }
 
 export interface IResponse {
-  ok: boolean
-  message?: string
+	message?: string
+	ok: boolean
 }

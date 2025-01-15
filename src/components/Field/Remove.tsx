@@ -1,28 +1,36 @@
-import type { I18nClient } from '@payloadcms/translations'
-import { Modal } from '@payloadcms/ui'
-import type { Payload, User } from 'payload'
+/* eslint-disable no-restricted-exports */
 
+import type { I18nClient } from '@payloadcms/translations'
+import type { Payload, User } from 'payload'
 import type { CustomTranslationsKeys, CustomTranslationsObject } from 'src/i18n.js'
-import RemoveButton from './RemoveButton.js'
+import type { PayloadTOTPConfig } from 'src/types.js'
+
+import { Modal } from '@payloadcms/ui'
+
 import { Remove as RemoveView } from '../views/Remove/index.js'
-import { PayloadTOTPConfig } from 'src/types.js'
+import RemoveButton from './RemoveButton.js'
 
 const modalSlug = 'remove-totp'
 
 type Args = {
-  pluginOptions: PayloadTOTPConfig
-  payload: Payload
-  user: User
-  i18n: I18nClient<CustomTranslationsObject, CustomTranslationsKeys>
+	i18n: I18nClient<CustomTranslationsObject, CustomTranslationsKeys>
+	payload: Payload
+	pluginOptions: PayloadTOTPConfig
+	user: User
 }
 
-export default async function Remove({ i18n, user, payload, pluginOptions }: Args) {
-  return (
-    <>
-      <RemoveButton modalSlug={modalSlug}>{i18n.t('general:remove')}</RemoveButton>
-      <Modal slug={modalSlug}>
-        <RemoveView i18n={i18n} user={user} payload={payload} pluginOptions={pluginOptions} />
-      </Modal>
-    </>
-  )
+export default function Remove({ i18n, payload, pluginOptions, user }: Args) {
+	return (
+		<>
+			<RemoveButton modalSlug={modalSlug}>{i18n.t('general:remove')}</RemoveButton>
+			<Modal slug={modalSlug}>
+				<RemoveView
+					i18n={i18n}
+					payload={payload}
+					pluginOptions={pluginOptions}
+					user={user}
+				/>
+			</Modal>
+		</>
+	)
 }
