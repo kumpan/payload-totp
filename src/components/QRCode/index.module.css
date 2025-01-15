@@ -1,7 +1,7 @@
 :global(html[data-theme='light']) .root {
-  filter: invert(1);
+	filter: invert(1);
 }
 
 .root {
-  user-select: none;
+	user-select: none;
 }

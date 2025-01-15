@@ -1,24 +1,26 @@
+/* eslint-disable no-restricted-exports */
+
 'use client'
 
 import { Button, useModal } from '@payloadcms/ui'
 
 type Args = {
-  children: React.ReactNode
-  modalSlug: string
+	children: React.ReactNode
+	modalSlug: string
 }
 
 export default function RemoveButton({ children, modalSlug }: Args) {
-  const { openModal } = useModal()
+	const { openModal } = useModal()
 
-  return (
-    <Button
-      buttonStyle="secondary"
-      size="small"
-      onClick={() => {
-        openModal(modalSlug)
-      }}
-    >
-      {children}
-    </Button>
-  )
+	return (
+		<Button
+			buttonStyle="secondary"
+			onClick={() => {
+				openModal(modalSlug)
+			}}
+			size="small"
+		>
+			{children}
+		</Button>
+	)
 }

@@ -1,20 +1,23 @@
+/* eslint-disable no-restricted-exports */
+
 import type { TOTP } from 'otpauth'
+
 import { toDataURL } from 'qrcode'
 
 import styles from './index.module.css'
 
 type Args = {
-  totp: TOTP
+	totp: TOTP
 }
 
 export default async function QRCode({ totp }: Args) {
-  const src = await toDataURL(totp.toString(), {
-    margin: 0,
-    color: {
-      dark: '#fff',
-      light: '#00000000',
-    },
-  })
+	const src = await toDataURL(totp.toString(), {
+		color: {
+			dark: '#fff',
+			light: '#00000000',
+		},
+		margin: 0,
+	})
 
-  return <img className={styles.root} src={src} width={196} height={196} alt="2FA QR Code" />
+	return <img alt="2FA QR Code" className={styles.root} height={196} src={src} width={196} />
 }

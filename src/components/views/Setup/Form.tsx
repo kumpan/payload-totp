@@ -1,87 +1,84 @@
+/* eslint-disable no-restricted-exports */
+
 'use client'
 
 import { toast } from '@payloadcms/ui'
 import React, { useCallback, useRef, useState } from 'react'
 
 import type { IResponse } from '../../../api/setSecret.js'
+
 import OTPInput from '../../OTPInput/index.js'
 
 type Args = {
-  secret: string
-  length?: number
-  back?: string
+	back?: string
+	length?: number
+	secret: string
 }
 
-export default function OTPForm({ secret, length, back }: Args) {
-  const [isPending, setIsPending] = useState(false)
-  const form = useRef<HTMLFormElement>(null)
+export default function OTPForm({ back, length, secret }: Args) {
+	const [isPending, setIsPending] = useState(false)
+	const form = useRef<HTMLFormElement>(null)
 
-  const onFilled = () => {
-    form.current && form.current.requestSubmit()
-  }
+	const onFilled = () => {
+		if (form.current) {
+			form.current.requestSubmit()
+		}
+	}
 
-  const asyncOperation = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    event.stopPropagation()
+	const asyncOperation = async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault()
+		event.stopPropagation()
 
-    setIsPending(true)
+		setIsPending(true)
 
-    const formData = new FormData(event.target as HTMLFormElement)
+		const formData = new FormData(event.target as HTMLFormElement)
 
-    let res: Response
+		const res = await fetch('/api/setup-totp', {
+			body: JSON.stringify(Object.fromEntries(formData)),
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			method: 'post',
+		})
 
-    try {
-      res = await fetch('/api/setup-totp', {
-        method: 'post',
-        credentials: 'include',
-        body: JSON.stringify(Object.fromEntries(formData)),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-    } catch (err) {
-      throw err
-    }
+		const data = (await res.json()) as IResponse
 
-    let data: IResponse
+		if (!data.ok && data.message) {
+			toast.error(data.message)
+			return false
+		}
 
-    try {
-      data = await res.json()
-    } catch (err) {
-      throw err
-    }
+		return true
+	}
 
-    if (!data.ok && data.message) {
-      toast.error(data.message)
-      return false
-    }
+	const handleSubmit: React.FormEventHandler<HTMLFormElement> = useCallback(
+		(event) => {
+			asyncOperation(event)
+				.then((ok) => {
+					if (ok) {
+						if (back) {
+							location.replace(back)
+						} else {
+							window.history.back()
+						}
+					}
+					setIsPending(false)
+				})
+				.catch((err) => {
+					// eslint-disable-next-line no-console
+					console.error(err)
+					toast.error('Something went wrong')
+					setIsPending(false)
+				})
+		},
+		[back],
+	)
 
-    return true
-  }
-
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = useCallback((event) => {
-    asyncOperation(event)
-      .then((ok) => {
-        if (ok) {
-          if (back) {
-            location.replace(back)
-          } else {
-            window.history.back()
-          }
-        }
-        setIsPending(false)
-      })
-      .catch((err) => {
-        console.error(err)
-        toast.error('Something went wrong')
-        setIsPending(false)
-      })
-  }, [])
-
-  return (
-    <form ref={form} onSubmit={handleSubmit}>
-      <input type="hidden" name="secret" defaultValue={secret} />
-      <OTPInput name="token" length={length} disabled={isPending} onFilled={onFilled} />
-    </form>
-  )
+	return (
+		<form onSubmit={handleSubmit} ref={form}>
+			<input defaultValue={secret} name="secret" type="hidden" />
+			<OTPInput disabled={isPending} length={length} name="token" onFilled={onFilled} />
+		</form>
+	)
 }
