@@ -1,26 +1,10 @@
-import type { NextServerOptions } from 'next/dist/server/next.js'
-
-import { createServer } from 'http'
-import next from 'next'
 import path from 'path'
-import { fileURLToPath, parse } from 'url'
+import { fileURLToPath } from 'url'
+
+import { prepareServer } from './prepareServer.js'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
-const opts: NextServerOptions = {
-	dev: true,
-	dir: dirname,
-}
-
-// @ts-expect-error next types do not import
-const app = next(opts)
-const handle = app.getRequestHandler()
-
-await app.prepare()
-
-const server = createServer((req, res) => {
-	const parsedUrl = parse(req.url!, true)
-	void handle(req, res, parsedUrl)
-})
+const server = await prepareServer(dirname, true)
 
 server.listen(3000)

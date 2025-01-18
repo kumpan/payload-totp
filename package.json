@@ -58,10 +58,12 @@
 		"dev:generate-types": "pnpm dev:payload generate:types",
 		"dev:payload": "cross-env PAYLOAD_CONFIG_PATH=./dev/payload.config.ts payload",
 		"dev:build": "next build ./dev",
+		"dev:start": "next start ./dev",
 		"lint": "eslint ./src",
 		"lint:fix": "eslint ./src --fix",
 		"prepublishOnly": "pnpm clean && pnpm build",
-		"test": "jest"
+		"test": "jest",
+		"e2e:test": "playwright test"
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3.2.0",
@@ -73,6 +75,7 @@
 		"@payloadcms/richtext-lexical": "3.14.0",
 		"@payloadcms/translations": "^3.14.0",
 		"@payloadcms/ui": "3.14.0",
+		"@playwright/test": "^1.49.1",
 		"@swc-node/register": "1.10.9",
 		"@swc/cli": "0.5.1",
 		"@swc/jest": "^0.2.37",

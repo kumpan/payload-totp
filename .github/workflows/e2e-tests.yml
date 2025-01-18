@@ -1,0 +1,35 @@
+name: End-to-end tests
+
+on:
+  - pull_request
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: pnpm/action-setup@v4
+      with:
+          version: '9.15.0'
+          run_install: false
+    - uses: actions/setup-node@v4
+      with:
+          node-version: 20.9
+          cache: 'pnpm'
+    - name: Install dependencies
+      run: pnpm install
+    - name: Install Playwright Browsers
+      run: pnpm exec playwright install --with-deps
+    - name: Build plugin
+      run: pnpm build
+    - name: Build dev
+      run: pnpm dev:build
+    - name: Run Playwright tests
+      run: pnpm exec playwright test
+    - uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
