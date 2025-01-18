@@ -1,30 +1,23 @@
 {
-  "extends": "../tsconfig.json",
-  "exclude": [],
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "../src/**/*.ts",
-    "../src/**/*.tsx",
-    "next.config.mjs",
-    ".next/types/**/*.ts"
-  ],
-  "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "@payload-config": [
-        "./payload.config.ts"
-      ],
-      "payload-totp": [
-        "../src/index.ts"
-      ],
-      "payload-totp/client": [
-        "../src/exports/client.ts"
-      ],
-      "payload-totp/rsc": [
-        "../src/exports/rsc.ts"
-      ]
-    },
-    "noEmit": true
-  }
+	"extends": "../tsconfig.json",
+	"exclude": [],
+	"include": [
+		"**/*.ts",
+		"**/*.tsx",
+		"../src/**/*.ts",
+		"../src/**/*.tsx",
+		"next.config.mjs",
+		".next/types/**/*.ts",
+		"app/(payload)/admin/importMap.js"
+	],
+	"compilerOptions": {
+		"baseUrl": "./",
+		"paths": {
+			"@payload-config": ["./payload.config.ts"],
+			"payload-totp": ["../src/index.ts"],
+			"payload-totp/client": ["../src/exports/client.ts"],
+			"payload-totp/rsc": ["../src/exports/rsc.ts"]
+		},
+		"noEmit": true
+	}
 }

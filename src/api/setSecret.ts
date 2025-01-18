@@ -1,9 +1,10 @@
 import type { I18nClient } from '@payloadcms/translations'
 import type { PayloadHandler } from 'payload'
-import type { CustomTranslationsKeys, CustomTranslationsObject } from 'src/i18n.js'
-import type { PayloadTOTPConfig } from 'src/types.js'
 
 import { Secret, TOTP } from 'otpauth'
+
+import type { CustomTranslationsKeys, CustomTranslationsObject } from '../i18n.js'
+import type { PayloadTOTPConfig } from '../types.js'
 
 import { setCookie } from '../setCookie.js'
 
@@ -40,6 +41,8 @@ export function setSecret(pluginOptions: PayloadTOTPConfig) {
 			algorithm: pluginOptions.totp?.algorithm || 'SHA1',
 			digits: pluginOptions.totp?.digits || 6,
 			issuer: pluginOptions.totp?.issuer || 'Payload',
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			// @ts-ignore
 			label: user.email || user.username,
 			period: pluginOptions.totp?.period || 30,
 			secret: Secret.fromBase32(data['secret']),
@@ -58,7 +61,8 @@ export function setSecret(pluginOptions: PayloadTOTPConfig) {
 				totpSecret: data['secret'],
 			},
 			overrideAccess: true,
-		})
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} as any) // TODO: Report this to Payload
 
 		const collection = payload.collections[user.collection]
 

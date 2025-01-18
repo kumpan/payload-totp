@@ -1,7 +1,8 @@
 import type { I18nClient } from '@payloadcms/translations'
 import type { TextFieldServerComponent } from 'payload'
-import type { CustomTranslationsKeys, CustomTranslationsObject } from 'src/i18n.js'
-import type { PayloadTOTPConfig } from 'src/types.js'
+
+import type { CustomTranslationsKeys, CustomTranslationsObject } from '../../i18n.js'
+import type { PayloadTOTPConfig } from '../../types.js'
 
 import { getTotpSecret } from '../../utilities/getTotpSecret.js'
 import styles from './index.module.css'

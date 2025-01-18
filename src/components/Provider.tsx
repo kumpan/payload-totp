@@ -1,7 +1,8 @@
 import type { ServerComponentProps } from 'payload'
-import type { PayloadTOTPConfig } from 'src/types.js'
 
 import { formatAdminURL } from '@payloadcms/ui/shared'
+
+import type { PayloadTOTPConfig } from '../types.js'
 
 import { getTotpSecret } from '../utilities/getTotpSecret.js'
 import Redirect from './Redirect.js'

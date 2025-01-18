@@ -4,7 +4,8 @@ import type {
 	NestedKeysStripped,
 } from '@payloadcms/translations'
 
-export const i18n = (incomingI18n?: I18nOptions<DefaultTranslationsObject>) =>
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export const i18n = (incomingI18n?: I18nOptions<{} | DefaultTranslationsObject>) =>
 	({
 		...(incomingI18n || {}),
 		translations: {

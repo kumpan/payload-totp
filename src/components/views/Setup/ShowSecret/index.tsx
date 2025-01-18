@@ -1,9 +1,10 @@
 /* eslint-disable no-restricted-exports */
 
 import type { I18nClient } from '@payloadcms/translations'
-import type { CustomTranslationsKeys, CustomTranslationsObject } from 'src/i18n.js'
 
 import { CopyToClipboard } from '@payloadcms/ui'
+
+import type { CustomTranslationsKeys, CustomTranslationsObject } from '../../../../i18n.js'
 
 import ShowSecretClient from './index.client.js'
 import styles from './index.module.css'

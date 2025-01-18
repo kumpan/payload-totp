@@ -1,9 +1,10 @@
 import type { I18nClient } from '@payloadcms/translations'
 import type { PayloadHandler } from 'payload'
-import type { CustomTranslationsKeys, CustomTranslationsObject } from 'src/i18n.js'
-import type { PayloadTOTPConfig } from 'src/types.js'
 
 import { Secret, TOTP } from 'otpauth'
+
+import type { CustomTranslationsKeys, CustomTranslationsObject } from '../i18n.js'
+import type { PayloadTOTPConfig } from '../types.js'
 
 import { getTotpSecret } from '../utilities/getTotpSecret.js'
 import { removeCookie } from '../utilities/removeCookie.js'
@@ -43,6 +44,8 @@ export function removeEndpointHandler(pluginOptions: PayloadTOTPConfig) {
 			algorithm: pluginOptions.totp?.algorithm || 'SHA1',
 			digits: pluginOptions.totp?.digits || 6,
 			issuer: pluginOptions.totp?.issuer || 'Payload',
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			// @ts-ignore
 			label: user.email || user.username,
 			period: pluginOptions.totp?.period || 30,
 			secret: Secret.fromBase32(totpSecret),
@@ -61,7 +64,8 @@ export function removeEndpointHandler(pluginOptions: PayloadTOTPConfig) {
 				totpSecret: null,
 			},
 			overrideAccess: true,
-		})
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} as any) // TODO: Report this to Payload
 
 		await removeCookie(payload.config.cookiePrefix)
 

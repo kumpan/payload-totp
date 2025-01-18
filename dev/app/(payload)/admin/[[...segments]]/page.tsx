@@ -8,18 +8,19 @@ import { generatePageMetadata, RootPage } from '@payloadcms/next/views'
 import { importMap } from '../importMap.js'
 
 type Args = {
-  params: Promise<{
-    segments: string[]
-  }>
-  searchParams: Promise<{
-    [key: string]: string | string[]
-  }>
+	params: Promise<{
+		segments: string[]
+	}>
+	searchParams: Promise<{
+		[key: string]: string | string[]
+	}>
 }
 
 export const generateMetadata = ({ params, searchParams }: Args): Promise<Metadata> =>
-  generatePageMetadata({ config, params, searchParams })
+	generatePageMetadata({ config, params, searchParams })
 
 const Page = ({ params, searchParams }: Args) =>
-  RootPage({ config, importMap, params, searchParams })
+	RootPage({ config, importMap, params, searchParams })
 
+// eslint-disable-next-line no-restricted-exports
 export default Page
