@@ -9,7 +9,7 @@ export async function getTotpSecret(user: User, payload: Payload): Promise<strin
 		return user.totpSecret
 	}
 
-	const { totpSecret } = await payload.findByID({
+	const { totpSecret } = (await payload.findByID({
 		id: user.id,
 		collection: user.collection,
 		overrideAccess: true,
@@ -17,7 +17,8 @@ export async function getTotpSecret(user: User, payload: Payload): Promise<strin
 			totpSecret: true,
 		},
 		showHiddenFields: true,
-	})
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	} as any)) as { totpSecret?: null | string } // TODO: Report this to Payload
 
 	return totpSecret as string | undefined
 }

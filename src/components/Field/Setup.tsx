@@ -1,10 +1,11 @@
 /* eslint-disable no-restricted-exports */
 
 import type { I18nClient } from '@payloadcms/translations'
-import type { CustomTranslationsKeys, CustomTranslationsObject } from 'src/i18n.js'
 
 import { Button } from '@payloadcms/ui'
 import Link from 'next/link.js'
+
+import type { CustomTranslationsKeys, CustomTranslationsObject } from '../../i18n.js'
 
 type Args = {
 	backUrl?: string

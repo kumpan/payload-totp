@@ -1,9 +1,10 @@
 import type { I18nClient } from '@payloadcms/translations'
 import type { Payload, User } from 'payload'
-import type { CustomTranslationsKeys, CustomTranslationsObject } from 'src/i18n.js'
-import type { PayloadTOTPConfig } from 'src/types.js'
 
 import { MinimalTemplate } from '@payloadcms/next/templates'
+
+import type { CustomTranslationsKeys, CustomTranslationsObject } from '../../../i18n.js'
+import type { PayloadTOTPConfig } from '../../../types.js'
 
 import Form from './Form.js'
 import styles from './index.module.css'

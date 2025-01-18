@@ -13,52 +13,52 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 if (!process.env.ROOT_DIR) {
-  process.env.ROOT_DIR = dirname
+	process.env.ROOT_DIR = dirname
 }
 
 // eslint-disable-next-line no-restricted-exports
 export default buildConfig({
-  admin: {
-    // autoLogin: devUser,
-    importMap: {
-      baseDir: path.resolve(dirname),
-    },
-  },
-  collections: [
-    {
-      slug: 'users',
-      fields: [],
-      auth: true,
-    },
-    // {
-    //   slug: 'posts',
-    //   fields: [],
-    // },
-    // {
-    //   slug: 'media',
-    //   fields: [],
-    //   upload: {
-    //     staticDir: path.resolve(dirname, 'media'),
-    //   },
-    // },
-  ],
-  db: mongooseAdapter({
-    url: process.env.DATABASE_URI || '',
-  }),
-  editor: lexicalEditor(),
-  //email: testEmailAdapter,
-  // onInit: async (payload) => {
-  //   await seed(payload)
-  // },
-  plugins: [
-    payloadTotp({
-      collection: 'users',
-      forceSetup: false,
-    }),
-  ],
-  secret: process.env.PAYLOAD_SECRET || 'test-secret_key',
-  // sharp,
-  typescript: {
-    outputFile: path.resolve(dirname, 'payload-types.ts'),
-  },
+	admin: {
+		// autoLogin: devUser,
+		importMap: {
+			baseDir: path.resolve(dirname),
+		},
+	},
+	collections: [
+		{
+			slug: 'users',
+			fields: [],
+			auth: true,
+		},
+		// {
+		//   slug: 'posts',
+		//   fields: [],
+		// },
+		// {
+		//   slug: 'media',
+		//   fields: [],
+		//   upload: {
+		//     staticDir: path.resolve(dirname, 'media'),
+		//   },
+		// },
+	],
+	db: mongooseAdapter({
+		url: process.env.DATABASE_URI || '',
+	}),
+	editor: lexicalEditor(),
+	//email: testEmailAdapter,
+	// onInit: async (payload) => {
+	//   await seed(payload)
+	// },
+	plugins: [
+		payloadTotp({
+			collection: 'users',
+			forceSetup: false,
+		}),
+	],
+	secret: process.env.PAYLOAD_SECRET || 'test-secret_key',
+	// sharp,
+	typescript: {
+		outputFile: path.resolve(dirname, 'payload-types.ts'),
+	},
 })

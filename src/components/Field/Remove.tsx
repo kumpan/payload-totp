@@ -2,10 +2,11 @@
 
 import type { I18nClient } from '@payloadcms/translations'
 import type { Payload, User } from 'payload'
-import type { CustomTranslationsKeys, CustomTranslationsObject } from 'src/i18n.js'
-import type { PayloadTOTPConfig } from 'src/types.js'
 
 import { Modal } from '@payloadcms/ui'
+
+import type { CustomTranslationsKeys, CustomTranslationsObject } from '../../i18n.js'
+import type { PayloadTOTPConfig } from '../../types.js'
 
 import { Remove as RemoveView } from '../views/Remove/index.js'
 import RemoveButton from './RemoveButton.js'

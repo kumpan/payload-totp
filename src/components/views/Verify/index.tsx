@@ -1,11 +1,12 @@
 import type { I18nClient } from '@payloadcms/translations'
 import type { AdminViewProps, ServerComponentProps } from 'payload'
-import type { CustomTranslationsKeys, CustomTranslationsObject } from 'src/i18n.js'
-import type { PayloadTOTPConfig } from 'src/types.js'
 
 import { MinimalTemplate } from '@payloadcms/next/templates'
 import { formatAdminURL } from '@payloadcms/ui/shared'
 import { redirect } from 'next/navigation.js'
+
+import type { CustomTranslationsKeys, CustomTranslationsObject } from '../../../i18n.js'
+import type { PayloadTOTPConfig } from '../../../types.js'
 
 import { getTotpSecret } from '../../../utilities/getTotpSecret.js'
 import Form from './Form.js'
@@ -37,7 +38,9 @@ export const TOTPVerify: React.FC<Args> = async (args) => {
 
 	const totpSecret = await getTotpSecret(user, payload)
 
-	if (!totpSecret || (totpSecret && user._strategy === 'totp')) {
+	// TODO: Report `user as any` to Payload
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	if (!totpSecret || (totpSecret && (user as any)._strategy === 'totp')) {
 		const url = formatAdminURL({
 			adminRoute: payload.config.routes.admin,
 			path: '/',

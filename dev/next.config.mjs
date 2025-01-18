@@ -6,16 +6,18 @@ const dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  webpack: (webpackConfig) => {
-    webpackConfig.resolve.extensionAlias = {
-      '.cjs': ['.cts', '.cjs'],
-      '.js': ['.ts', '.tsx', '.js', '.jsx'],
-      '.mjs': ['.mts', '.mjs'],
-    }
+	webpack: (webpackConfig) => {
+		webpackConfig.resolve.extensionAlias = {
+			'.cjs': ['.cts', '.cjs'],
+			'.js': ['.ts', '.tsx', '.js', '.jsx'],
+			'.mjs': ['.mts', '.mjs'],
+		}
 
-    return webpackConfig
-  },
-  // transpilePackages: ['../src'],
+		return webpackConfig
+	},
+	eslint: {
+		ignoreDuringBuilds: true,
+	},
 }
 
 export default withPayload(nextConfig)

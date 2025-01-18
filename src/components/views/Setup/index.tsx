@@ -1,12 +1,13 @@
 import type { I18nClient } from '@payloadcms/translations'
 import type { AdminViewProps, ServerComponentProps } from 'payload'
-import type { CustomTranslationsKeys, CustomTranslationsObject } from 'src/i18n.js'
-import type { PayloadTOTPConfig } from 'src/types.js'
 
 import { MinimalTemplate } from '@payloadcms/next/templates'
 import { formatAdminURL } from '@payloadcms/ui/shared'
 import { redirect } from 'next/navigation.js'
 import { Secret, TOTP } from 'otpauth'
+
+import type { CustomTranslationsKeys, CustomTranslationsObject } from '../../../i18n.js'
+import type { PayloadTOTPConfig } from '../../../types.js'
 
 import { getTotpSecret } from '../../../utilities/getTotpSecret.js'
 import QRCode from '../../QRCode/index.js'
@@ -57,6 +58,8 @@ export const TOTPSetup: React.FC<Args> = async (args) => {
 		algorithm: pluginOptions.totp?.algorithm || 'SHA1',
 		digits: pluginOptions.totp?.digits || 6,
 		issuer: pluginOptions.totp?.issuer || 'Payload',
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
 		label: user.email || user.username,
 		period: pluginOptions.totp?.period || 30,
 		secret,
