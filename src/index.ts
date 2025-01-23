@@ -12,12 +12,19 @@ import { totpAccess } from './totpAccess.js'
 export const payloadTotp =
 	(pluginOptions: PayloadTOTPConfig) =>
 	(config: Config): Config => {
+		const LoginButton = {
+			serverProps: {
+				pluginOptions,
+			},
+			path: 'payload-totp/rsc#LoginRSC',
+		}
 		return {
 			...config,
 			admin: {
 				...(config.admin || {}),
 				components: {
 					...(config.admin?.components || {}),
+					beforeLogin: [LoginButton],
 					providers: [
 						{
 							path: 'payload-totp/rsc#TOTPProvider',
@@ -25,6 +32,12 @@ export const payloadTotp =
 								pluginOptions,
 							},
 						},
+						// {
+						// 	path: 'payload-totp/client#TOTPProvider',
+						// 	clientProps: {
+						// 		pluginOptions,
+						// 	},
+						// },
 					],
 					views: {
 						...(config.admin?.components?.views || {}),
@@ -102,6 +115,7 @@ export const payloadTotp =
 							},
 							auth: {
 								...(typeof collection.auth === 'object' ? collection.auth : {}),
+								// disableLocalStrategy: true,
 								strategies: [
 									strategy,
 									...(typeof collection.auth === 'object'

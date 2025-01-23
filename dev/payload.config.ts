@@ -27,8 +27,8 @@ export default buildConfig({
 	collections: [
 		{
 			slug: 'users',
-			fields: [],
 			auth: true,
+			fields: [],
 		},
 		// {
 		//   slug: 'posts',
@@ -43,7 +43,7 @@ export default buildConfig({
 		// },
 	],
 	db: mongooseAdapter({
-		url: process.env.DATABASE_URI || '',
+		url: process.env.MONGO_URL || 'mongodb://localhost:27017/payload',
 	}),
 	editor: lexicalEditor(),
 	//email: testEmailAdapter,

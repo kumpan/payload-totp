@@ -10,6 +10,7 @@ import Remove from './Remove.js'
 import Setup from './Setup.js'
 
 export const TOTPField: TextFieldServerComponent = async (args) => {
+	// @ts-expect-error
 	const pluginOptions = args.pluginOptions as PayloadTOTPConfig
 	const i18n = args.i18n as I18nClient<CustomTranslationsObject, CustomTranslationsKeys>
 	const {

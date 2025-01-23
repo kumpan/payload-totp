@@ -49,6 +49,16 @@ export const TOTPVerify: React.FC<Args> = async (args) => {
 		redirect(url)
 	}
 
+	// Redirect to setup if user has no TOTP secret
+	if (!totpSecret && user && (user as any)._strategy !== 'totp') {
+		console.log('TOTPVerify redirecting to /admin/setup-totp')
+		const url = formatAdminURL({
+			adminRoute: payload.config.routes.admin,
+			path: '/setup-totp',
+		})
+
+		redirect(url)
+	}
 	return (
 		<MinimalTemplate className={styles.root}>
 			<h1>{i18n.t('totpPlugin:verify:title')}</h1>

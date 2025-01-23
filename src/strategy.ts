@@ -7,6 +7,7 @@ export const strategy: AuthStrategy = {
 	name: 'totp',
 	authenticate: async (args) => {
 		const { payload } = args
+		// console.log('payload', payload)
 		const cookieStore = await cookies()
 		const token = cookieStore.get(`${payload.config.cookiePrefix}-totp`)
 
@@ -48,12 +49,14 @@ export const strategy: AuthStrategy = {
 		const originalStrategyResult = await originalStrategy.authenticate(args)
 
 		if (originalStrategyResult.user?.id === userId) {
-			return {
+			const user = {
 				user: {
 					...originalStrategyResult.user,
 					_strategy: 'totp',
 				},
 			}
+			console.log('user in strategy', user)
+			return user
 		} else {
 			return {
 				user: null,
