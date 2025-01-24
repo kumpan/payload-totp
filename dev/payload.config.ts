@@ -43,6 +43,16 @@ export default buildConfig({
 		// },
 	],
 	db: mongooseAdapter({
+		connectOptions:
+			process.env.NODE_ENV === 'development'
+				? {
+						authSource: 'admin',
+						dbName: 'payload-plugin',
+						pass: 'pass',
+						ssl: false,
+						user: 'user',
+					}
+				: undefined,
 		url: process.env.MONGO_URL || 'mongodb://localhost:27017/payload',
 	}),
 	editor: lexicalEditor(),

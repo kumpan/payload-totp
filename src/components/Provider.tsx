@@ -15,7 +15,7 @@ type Args = {
 export const TOTPProvider = async (args: Args) => {
 	const { children, payload, pluginOptions, user } = args
 
-	console.log('PROVIDER SERVER')
+	console.log('PROVIDER SERVER', user)
 	const totpSecret = await getTotpSecret(user, payload)
 
 	if (user && totpSecret && user._strategy !== 'totp') {

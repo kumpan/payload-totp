@@ -17,9 +17,6 @@ importers:
       otpauth:
         specifier: ^9.3.6
         version: 9.3.6
-      placera-se:
-        specifier: link:/home/tobias/www/afv/placera.se
-        version: link:../placera.se
       qrcode:
         specifier: ^1.5.4
         version: 1.5.4

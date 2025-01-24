@@ -13,10 +13,10 @@ export const payloadTotp =
 	(pluginOptions: PayloadTOTPConfig) =>
 	(config: Config): Config => {
 		const LoginButton = {
+			path: 'payload-totp/rsc#LoginRSC',
 			serverProps: {
 				pluginOptions,
 			},
-			path: 'payload-totp/rsc#LoginRSC',
 		}
 		return {
 			...config,
@@ -32,12 +32,6 @@ export const payloadTotp =
 								pluginOptions,
 							},
 						},
-						// {
-						// 	path: 'payload-totp/client#TOTPProvider',
-						// 	clientProps: {
-						// 		pluginOptions,
-						// 	},
-						// },
 					],
 					views: {
 						...(config.admin?.components?.views || {}),
@@ -156,6 +150,9 @@ export const payloadTotp =
 									},
 								} as UIField,
 							],
+							hooks: {
+								afterLogout: [], // TODO: delete totp cookie
+							},
 						}
 					} else {
 						return {
@@ -256,6 +253,7 @@ export const payloadTotp =
 					}
 				}),
 			],
+			hooks: {},
 			i18n: i18n(config.i18n),
 		}
 	}
